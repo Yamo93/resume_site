@@ -22,17 +22,20 @@ sass.compiler = require('node-sass');
 const paths = {
     allFiles: 'src/**/*.*',
     htmlFiles: 'src/**/*.html',
+    phpFiles: 'src/**/*.php',
     imageFolder: 'src/img/*.*',
     cssFiles: 'src/**/*.css',
     jsFiles: 'src/**/*.js',
     scssFiles: 'src/scss/*.scss',
-    mainCSS: 'src/css/style.css'
-}
+    mainCSS: 'src/css/style.css',
+    htAccess: 'src/.htaccess',
+    cssLibraries: 'src/lib/*.css'
+};
 
 // Spinnar upp en server och skapar en lyssnare för olika typer av filer och uppgifter
 function watchTask() {
-    watch([paths.allFiles, paths.htmlFiles, paths.imageFolder, paths.cssFiles, paths.jsFiles, paths.scssFiles],
-        parallel(copyHTML, copyImages, compileToSCSS, jsTask));
+    watch([paths.allFiles, paths.htmlFiles, paths.phpFiles, paths.imageFolder, paths.cssFiles, paths.jsFiles, paths.scssFiles, paths.cssLibraries, paths.htAccess],
+        parallel(copyHTML, copyPHP, copyImages, copyHtAccess, compileToSCSS, copyCSSLibraries, jsTask));
     connect.server({
         root: 'pub',
         livereload: true
@@ -44,6 +47,17 @@ function copyHTML() {
     return src(paths.htmlFiles)
         .pipe(dest('pub'))
         .pipe(connect.reload());
+}
+
+function copyPHP() {
+    return src(paths.phpFiles)
+        .pipe(dest('pub'))
+        .pipe(connect.reload());
+}
+
+function copyHtAccess() {
+    return src(paths.htAccess)
+        .pipe(dest('pub'))
 }
 
 // Kopierar bilder till pub och laddar om webbläsaren
@@ -81,12 +95,21 @@ function compileToSCSS() {
         .pipe(connect.reload());
 }
 
+function copyCSSLibraries() {
+    return src(paths.cssLibraries)
+        .pipe(dest('pub/lib'))
+        .pipe(connect.reload());
+}
+
 // Rad av uppgifter som körs vid "gulp"-kommandot
 exports.default = series(
     cleanPub,
     copyHTML,
+    copyPHP,
     copyImages,
+    copyHtAccess,
     compileToSCSS,
+    copyCSSLibraries,
     jsTask,
     watchTask
 );
