@@ -1,6 +1,10 @@
 <?php
     include_once('php/config.php');
 
+    if(!isset($_SESSION['username'])) {
+        header('Location: login.php');
+    }
+
     $user = new User();
 
 ?>
@@ -11,10 +15,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Inloggning till adminssidan</title>
+    <title>Adminsidan</title>
     <link rel="stylesheet" href="lib/bootstrap.min.css">
 </head>
 <body>
+    <div class="modal fade" id="update-education-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Uppdatera utbildning</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="POST" class="update-education-form">
+        <div class="modal-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="updateeducationname">Namn på utbildning</label>
+                        <input type="text" class="form-control" placeholder="Utbildning" id="updateeducationname">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="updateeducationschool">Lärosäte</label>
+                        <input type="text" class="form-control" placeholder="Lärosäte" id="updateeducationschool">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                    <label class="col-form-label" for="updateeducationstartyear">Från år</label>
+                    <select class="custom-select" id="updateeducationstartyear">
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                    </select>
+                    </div>
+                    <div class="col-md-6">
+                    <label class="col-form-label" for="updateeducationstartmonth">Månad</label>
+                    <select class="custom-select" id="updateeducationstartmonth">
+                        <option value="januari">januari</option>
+                        <option value="februari">februari</option>
+                        <option value="mars">mars</option>
+                        <option value="april">april</option>
+                        <option value="maj">maj</option>
+                        <option value="juni">juni</option>
+                        <option value="juli">juli</option>
+                        <option value="augusti">augusti</option>
+                        <option value="september">september</option>
+                        <option value="oktober">oktober</option>
+                        <option value="november">november</option>
+                        <option value="december">december</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="updateeducationongoing">
+                    <label class="custom-control-label" for="updateeducationongoing">Pågående</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <label class="col-form-label" for="updateeducationendyear">Till år</label>
+                    <select class="custom-select" id="updateeducationendyear">
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                    </select>
+                    </div>
+                    <div class="col-md-6">
+                    <label class="col-form-label" for="updateeducationendmonth">Månad</label>
+                    <select class="custom-select" id="updateeducationendmonth">
+                        <option value="januari">januari</option>
+                        <option value="februari">februari</option>
+                        <option value="mars">mars</option>
+                        <option value="april">april</option>
+                        <option value="maj">maj</option>
+                        <option value="juni">juni</option>
+                        <option value="juli">juli</option>
+                        <option value="augusti">augusti</option>
+                        <option value="september">september</option>
+                        <option value="oktober">oktober</option>
+                        <option value="november">november</option>
+                        <option value="december">december</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="update-education-alert-danger alert alert-dismissible alert-danger mt-3" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>And try submitting again.
+            </div>
+            <div class="update-education-alert-success alert alert-dismissible alert-success mt-3" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>You successfully read.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Uppdatera</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+        </div>
+        </form>
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="delete-education-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Vill du radera följande utbildning:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="deleted-education-name"><strong>Namn:</strong>Modal body text goes here.</p>
+            <p class="deleted-education-school"><strong>Lärosäte:</strong>Modal body text goes here.</p>
+            <p class="deleted-education-date"><strong>Tid:</strong>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger education-delete-btn">Radera</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+        </div>
+        </div>
+    </div>
+    </div>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="#">Admin</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,346 +194,22 @@
   </li>
 </ul>
 <div id="myTabContent" class="tab-content">
-  <div class="tab-pane fade active show" id="education" role="tabpanel" aria-labelledby="education-tab">
-        <h3 class="mt-3 mb-3">Lägg till utbildning</h3>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
-                    <label class="col-form-label" for="educationname">Namn på utbildning</label>
-                    <input type="text" class="form-control" placeholder="Utbildning" id="educationname">
-                </div>
-                <div class="col-md-6">
-                    <label class="col-form-label" for="educationschool">Lärosäte</label>
-                    <input type="text" class="form-control" placeholder="Lärosäte" id="educationschool">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
-                <label class="col-form-label" for="educationstartyear">Från år</label>
-                <select class="custom-select" id="educationstartyear">
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
-                    <option value="2009">2009</option>
-                </select>
-                </div>
-                <div class="col-md-6">
-                <label class="col-form-label" for="educationstartmonth">Månad</label>
-                <select class="custom-select" id="educationstartmonth">
-                    <option value="jan">januari</option>
-                    <option value="feb">februari</option>
-                    <option value="mar">mars</option>
-                    <option value="apr">april</option>
-                    <option value="may">maj</option>
-                    <option value="jun">juni</option>
-                    <option value="jul">juli</option>
-                    <option value="aug">augusti</option>
-                    <option value="sep">september</option>
-                    <option value="oct">oktober</option>
-                    <option value="nov">november</option>
-                    <option value="dec">december</option>
-                </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="workongoing">
-                <label class="custom-control-label" for="workongoing">Pågående</label>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                <label class="col-form-label" for="educationendyear">Till år</label>
-                <select class="custom-select" id="educationendyear">
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
-                    <option value="2009">2009</option>
-                </select>
-                </div>
-                <div class="col-md-6">
-                <label class="col-form-label" for="educationendmonth">Månad</label>
-                <select class="custom-select" id="educationendmonth">
-                    <option value="jan">januari</option>
-                    <option value="feb">februari</option>
-                    <option value="mar">mars</option>
-                    <option value="apr">april</option>
-                    <option value="may">maj</option>
-                    <option value="jun">juni</option>
-                    <option value="jul">juli</option>
-                    <option value="aug">augusti</option>
-                    <option value="sep">september</option>
-                    <option value="oct">oktober</option>
-                    <option value="nov">november</option>
-                    <option value="dec">december</option>
-                </select>
-                </div>
-            </div>
-        </div>
-        <button type="button" class="btn btn-success">Spara</button>
 
-        <table class="table mt-5 mb-5">
-            <thead class="thead-dark">
-                <tr>
-                <th scope="col">Utbildning</th>
-                <th scope="col">Lärosäte</th>
-                <th scope="col">Tid</th>
-                <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Webbutveckling</th>
-                    <td>Mittuniversitetet</td>
-                    <td>augusti 2018 - juni 2020</td>
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                        <button type="button" class="btn btn-danger btn-sm">Radera</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">Webbutveckling</th>
-                    <td>Mittuniversitetet</td>
-                    <td>augusti 2018 - juni 2020</td>
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                        <button type="button" class="btn btn-danger btn-sm">Radera</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">Webbutveckling</th>
-                    <td>Mittuniversitetet</td>
-                    <td>augusti 2018 - juni 2020</td>
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                        <button type="button" class="btn btn-danger btn-sm">Radera</button>
-                    </td>
-                </tr>
+<!-- Education Tab -->
+<?php include('includes/education-tab.php'); ?>
 
-            </tbody>
-            </table>
-  </div>
+<!-- Work tab -->
+<?php include('includes/work-tab.php'); ?>
 
-  <!-- Work tab -->
-  <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
-  <h3 class="mt-3 mb-3">Lägg till arbete</h3>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
-                    <label class="col-form-label" for="workname">Arbetsplats</label>
-                    <input type="text" class="form-control" placeholder="Arbetsplats" id="workname">
-                </div>
-                <div class="col-md-6">
-                    <label class="col-form-label" for="worktitle">Titel</label>
-                    <input type="text" class="form-control" placeholder="Titel" id="worktitle">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
-                <label class="col-form-label" for="workstartyear">Från år</label>
-                <select class="custom-select" id="workstartyear">
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
-                    <option value="2009">2009</option>
-                </select>
-                </div>
-                <div class="col-md-6">
-                <label class="col-form-label" for="workstartmonth">Månad</label>
-                <select class="custom-select" id="workstartmonth">
-                    <option value="jan">januari</option>
-                    <option value="feb">februari</option>
-                    <option value="mar">mars</option>
-                    <option value="apr">april</option>
-                    <option value="may">maj</option>
-                    <option value="jun">juni</option>
-                    <option value="jul">juli</option>
-                    <option value="aug">augusti</option>
-                    <option value="sep">september</option>
-                    <option value="oct">oktober</option>
-                    <option value="nov">november</option>
-                    <option value="dec">december</option>
-                </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="workongoing">
-                <label class="custom-control-label" for="workongoing">Pågående</label>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                <label class="col-form-label" for="workendyear">Till år</label>
-                <select class="custom-select" id="workendyear">
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
-                    <option value="2009">2009</option>
-                </select>
-                </div>
-                <div class="col-md-6">
-                <label class="col-form-label" for="workendmonth">Månad</label>
-                <select class="custom-select" id="workendmonth">
-                    <option value="jan">januari</option>
-                    <option value="feb">februari</option>
-                    <option value="mar">mars</option>
-                    <option value="apr">april</option>
-                    <option value="may">maj</option>
-                    <option value="jun">juni</option>
-                    <option value="jul">juli</option>
-                    <option value="aug">augusti</option>
-                    <option value="sep">september</option>
-                    <option value="oct">oktober</option>
-                    <option value="nov">november</option>
-                    <option value="dec">december</option>
-                </select>
-                </div>
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-success">Spara</button>
-
-<table class="table mt-5 mb-5">
-    <thead class="thead-dark">
-        <tr>
-        <th scope="col">Arbetsplats</th>
-        <th scope="col">Titel</th>
-        <th scope="col">Tid</th>
-        <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">GESHDO Now AB</th>
-            <td>Webbutvecklare</td>
-            <td>augusti 2019 - pågående</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                <button type="button" class="btn btn-danger btn-sm">Radera</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Webbutveckling</th>
-            <td>Mittuniversitetet</td>
-            <td>augusti 2018 - juni 2020</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                <button type="button" class="btn btn-danger btn-sm">Radera</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Webbutveckling</th>
-            <td>Mittuniversitetet</td>
-            <td>augusti 2018 - juni 2020</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                <button type="button" class="btn btn-danger btn-sm">Radera</button>
-            </td>
-        </tr>
-
-    </tbody>
-    </table>
-  </div>
-
-  <!-- Projects tab -->
-  <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
-  <h3 class="mt-3 mb-3">Lägg till projekt</h3>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
-                    <label class="col-form-label" for="projecttitle">Titel</label>
-                    <input type="text" class="form-control" placeholder="Titel" id="projecttitle">
-                </div>
-                <div class="col-md-6">
-                    <label class="col-form-label" for="projectlink">Länk</label>
-                    <input type="text" class="form-control" placeholder="Länk" id="projectlink">
-                </div>
-            </div>
-            <label class="col-form-label" for="projectdescription">Beskrivning</label>
-            <input type="text" class="form-control" placeholder="Beskrivning" id="projectdescription">
-        </div>
-
-        <button type="button" class="btn btn-success">Spara</button>
-
-<table class="table mt-5 mb-5">
-    <thead class="thead-dark">
-        <tr>
-        <th scope="col">Titel</th>
-        <th scope="col">Länk</th>
-        <th scope="col">Beskrivning</th>
-        <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">Opinion-bloggportalen</th>
-            <td><a href="www.opinion.se" target="_blank">www.opinion.se</a></td>
-            <td>En interaktiv bloggportal skapad med PHP och MySQL.</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                <button type="button" class="btn btn-danger btn-sm">Radera</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Webbutveckling</th>
-            <td>Mittuniversitetet</td>
-            <td>augusti 2018 - juni 2020</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                <button type="button" class="btn btn-danger btn-sm">Radera</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Webbutveckling</th>
-            <td>Mittuniversitetet</td>
-            <td>augusti 2018 - juni 2020</td>
-            <td>
-                <button type="button" class="btn btn-info btn-sm">Uppdatera</button>
-                <button type="button" class="btn btn-danger btn-sm">Radera</button>
-            </td>
-        </tr>
-
-    </tbody>
-    </table>
-  </div>
+<!-- Projects tab -->
+<?php include('includes/project-tab.php'); ?>
+  
 </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/esm/popper.min.js" integrity="sha256-3Iu0zFU6cPS92RSC3Pe4DBwjIV/9XKyzYTqKZzly6A8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

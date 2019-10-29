@@ -26,6 +26,9 @@ const paths = {
     imageFolder: 'src/img/*.*',
     cssFiles: 'src/**/*.css',
     jsFiles: 'src/**/*.js',
+    educationJs: 'src/js/education.js',
+    mainJs: 'src/js/main.js',
+    popperJs: 'src/js/lib/popper.js',
     scssFiles: 'src/scss/*.scss',
     mainCSS: 'src/css/style.css',
     htAccess: 'src/.htaccess',
@@ -34,8 +37,8 @@ const paths = {
 
 // Spinnar upp en server och skapar en lyssnare för olika typer av filer och uppgifter
 function watchTask() {
-    watch([paths.allFiles, paths.htmlFiles, paths.phpFiles, paths.imageFolder, paths.cssFiles, paths.jsFiles, paths.scssFiles, paths.cssLibraries, paths.htAccess],
-        parallel(copyHTML, copyPHP, copyImages, copyHtAccess, compileToSCSS, copyCSSLibraries, jsTask));
+    watch([paths.allFiles, paths.htmlFiles, paths.phpFiles, paths.imageFolder, paths.cssFiles, paths.jsFiles, paths.mainJs, paths.educationJs, paths.popperJs, paths.scssFiles, paths.cssLibraries, paths.htAccess],
+        parallel(copyHTML, copyPHP, copyImages, copyHtAccess, compileToSCSS, copyCSSLibraries, copyJSLibraries, jsTask));
     connect.server({
         root: 'pub',
         livereload: true
@@ -75,13 +78,19 @@ function cleanPub() {
 
 // Konkatenerar och minifierar JS-filer och laddar om webbläsaren
 function jsTask() {
-    return src(paths.jsFiles)
+    return src([paths.mainJs, paths.educationJs])
         .pipe(concat('main.js'))
         .pipe(babel({
             presets: ['@babel/env']
         }))
         .pipe(terser())
         .pipe(dest('pub/js'))
+        .pipe(connect.reload());
+}
+
+function copyJSLibraries() {
+    return src([paths.popperJs])
+        .pipe(dest('pub/js/lib'))
         .pipe(connect.reload());
 }
 
@@ -110,6 +119,7 @@ exports.default = series(
     copyHtAccess,
     compileToSCSS,
     copyCSSLibraries,
+    copyJSLibraries,
     jsTask,
     watchTask
 );

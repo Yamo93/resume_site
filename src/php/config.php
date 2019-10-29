@@ -2,8 +2,8 @@
 session_start();
 // /* Lokal utveckling */
 define("DB_HOST", 'localhost');
-define("DB_USERNAME", 'root');
-define("DB_PASSWORD", '');
+define("DB_USERNAME", 'yamo93');
+define("DB_PASSWORD", '12345');
 define("DB_NAME", 'resume_site');
 include_once('properties.php');
 function my_autoloader($class) {
