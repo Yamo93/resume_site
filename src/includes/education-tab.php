@@ -100,7 +100,7 @@
         </div>
         </form>
 
-        <div class="education-card card border-primary mb-3" style="max-width: 20rem; display: none;">
+        <div class="education-card card border-primary mb-3 mt-5" style="max-width: 20rem; display: none;">
             <div class="card-header">Meddelande</div>
             <div class="card-body">
             <h4 class="card-title">Primary card title</h4>

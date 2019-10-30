@@ -27,7 +27,8 @@ const paths = {
     cssFiles: 'src/**/*.css',
     jsFiles: 'src/**/*.js',
     educationJs: 'src/js/education.js',
-    mainJs: 'src/js/main.js',
+    employmentJs: 'src/js/employment.js',
+    projectJs: 'src/js/project.js',
     popperJs: 'src/js/lib/popper.js',
     scssFiles: 'src/scss/*.scss',
     mainCSS: 'src/css/style.css',
@@ -37,7 +38,7 @@ const paths = {
 
 // Spinnar upp en server och skapar en lyssnare för olika typer av filer och uppgifter
 function watchTask() {
-    watch([paths.allFiles, paths.htmlFiles, paths.phpFiles, paths.imageFolder, paths.cssFiles, paths.jsFiles, paths.mainJs, paths.educationJs, paths.popperJs, paths.scssFiles, paths.cssLibraries, paths.htAccess],
+    watch([paths.allFiles, paths.htmlFiles, paths.phpFiles, paths.imageFolder, paths.cssFiles, paths.jsFiles, paths.educationJs, paths.employmentJs, paths.projectJs, paths.popperJs, paths.scssFiles, paths.cssLibraries, paths.htAccess],
         parallel(copyHTML, copyPHP, copyImages, copyHtAccess, compileToSCSS, copyCSSLibraries, copyJSLibraries, jsTask));
     connect.server({
         root: 'pub',
@@ -78,7 +79,7 @@ function cleanPub() {
 
 // Konkatenerar och minifierar JS-filer och laddar om webbläsaren
 function jsTask() {
-    return src([paths.mainJs, paths.educationJs])
+    return src([paths.educationJs, paths.employmentJs, paths.projectJs])
         .pipe(concat('main.js'))
         .pipe(babel({
             presets: ['@babel/env']

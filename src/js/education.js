@@ -1,8 +1,8 @@
 // Variabler
-const localURL = 'http://localhost/resume_site/pub/api/education';
+const localEducationURL = 'http://localhost/resume_site/pub/api/education';
 let education = [];
-let deletedId = null;
-let updatedId = null;
+let deletedEducationId = null;
+let updatedEducationId = null;
 
 // Eventlyssnare
 document.getElementById('educationongoing').addEventListener('change', changeEducationEndState);
@@ -38,8 +38,11 @@ function fetchEducation() {
     // Rensa tabellen först
     document.querySelector('#education tbody').innerHTML = '';
 
+    // Göm kortet om det har synts förut
+    document.querySelector('.education-card').style.display = 'none';
+
     // Hämta kurser via API:et
-    fetch(localURL, {
+    fetch(localEducationURL, {
         method: 'get'
     })
     .then(res => res.json())
@@ -59,8 +62,8 @@ function fetchEducation() {
                     <td>${edu.school}</td>
                     <td>${edu.startmonth} ${edu.startyear} - ${edu.ongoing == 1 ? 'pågående' : edu.endmonth + ' ' + edu.endyear}</td>
                     <td>
-                        <button type="button" class="btn btn-info btn-sm" onClick="openUpdateModal(${edu.id})">Uppdatera</button>
-                        <button type="button" class="btn btn-danger btn-sm" onClick="openDeleteModal(${edu.id})">Radera</button>
+                        <button type="button" class="btn btn-info btn-sm" onClick="openEducationUpdateModal(${edu.id})">Uppdatera</button>
+                        <button type="button" class="btn btn-danger btn-sm" onClick="openEducationDeleteModal(${edu.id})">Radera</button>
                     </td>
                 </tr>
                 `;
@@ -95,7 +98,7 @@ function addEducation(e) {
 
     if (name.trim().length === 0 || school.trim().length === 0 || startyear.trim().length === 0 || startmonth.trim().length === 0) {
         // Visa meddelande
-        showMessage('education-alert-danger', 'Fyll i samtliga fält.');
+        showEducationMessage('education-alert-danger', 'Fyll i samtliga fält.');
 
         return;
     }
@@ -123,14 +126,14 @@ function addEducation(e) {
     }
 
 
-    fetch(localURL, {
+    fetch(localEducationURL, {
         method: 'post',
         body: JSON.stringify(addedEducation)
     })
     .then(res => res.json())
     .then(data => {
         // Visa meddelande
-        showMessage(data.class, data.message);
+        showEducationMessage(data.class, data.message);
 
         // Rensa fälten
         clearEducationFields();
@@ -140,20 +143,20 @@ function addEducation(e) {
     })
     .catch(err => {
         // Visa felmeddelande
-        showMessage('education-alert-danger', err);
+        showEducationMessage('education-alert-danger', err);
     });
 }
 
 function deleteEducation() {
 
-    fetch(localURL, {
+    fetch(localEducationURL, {
         method: 'delete',
-        body: JSON.stringify({ id: deletedId })
+        body: JSON.stringify({ id: deletedEducationId })
     })
     .then(res => res.json())
     .then(data => {
         // Visa meddelande
-        showMessage(data.class, data.message);
+        showEducationMessage(data.class, data.message);
 
         // Rensa fälten
         clearEducationFields();
@@ -166,7 +169,7 @@ function deleteEducation() {
     })
     .catch(err => {
         // Visa felmeddelande
-        showMessage('education-alert-danger', err);
+        showEducationMessage('education-alert-danger', err);
     });
 }
 
@@ -184,14 +187,14 @@ function updateEducation(e) {
 
     if (name.trim().length === 0 || school.trim().length === 0 || startyear.trim().length === 0 || startmonth.trim().length === 0) {
         // Visa meddelande
-        showMessage('update-education-alert-danger', 'Alla fält måste fyllas i.');
+        showEducationMessage('update-education-alert-danger', 'Alla fält måste fyllas i.');
 
         return;
     }
 
     if (!ongoing && endyear.trim().length === 0 && endmonth.trim().length === 0 || endyear.trim().length > 0 && endmonth.trim().length === 0 || endmonth.trim().length > 0 && endyear.trim().length === 0) {
         // Visa meddelande
-        showMessage('update-education-alert-danger', 'Både slutår och månad måste anges om utbildningen inte är pågående.');
+        showEducationMessage('update-education-alert-danger', 'Både slutår och månad måste anges om utbildningen inte är pågående.');
         return;
     }
 
@@ -206,7 +209,7 @@ function updateEducation(e) {
             ongoing: 1,
             endyear: null,
             endmonth: null,
-            id: updatedId
+            id: updatedEducationId
         };
     } else {
         updatedEdu = {
@@ -217,18 +220,18 @@ function updateEducation(e) {
             ongoing: 0,
             endyear,
             endmonth,
-            id: updatedId
+            id: updatedEducationId
         };
     }
 
-    fetch(localURL, {
+    fetch(localEducationURL, {
         method: 'put',
         body: JSON.stringify(updatedEdu)
     })
     .then(res => res.json())
     .then(data => {
         // Visa meddelande
-        showMessage(data.class, data.message);
+        showEducationMessage(data.class, data.message);
 
         // Rensa fälten
         clearEducationFields();
@@ -241,7 +244,7 @@ function updateEducation(e) {
     })
     .catch(err => {
         // Visa felmeddelande
-        showMessage('update-education-alert-danger', err);
+        showEducationMessage('update-education-alert-danger', err);
     });
 }
 
@@ -255,7 +258,7 @@ function clearEducationFields() {
     document.querySelector('#educationendmonth').selectedIndex = 0;
 }
 
-function openUpdateModal(id) {
+function openEducationUpdateModal(id) {
     // Open modal
     $('#update-education-modal').modal({
         backdrop: true,
@@ -265,7 +268,7 @@ function openUpdateModal(id) {
     });
 
     // Save update ID in global variable
-    updatedId = id;
+    updatedEducationId = id;
 
     // Find education
     const foundEdu = education.find(edu => edu.id == id);
@@ -289,7 +292,7 @@ function openUpdateModal(id) {
 
 }
 
-function openDeleteModal(id) {
+function openEducationDeleteModal(id) {
     // Open modal
     $('#delete-education-modal').modal({
         backdrop: true,
@@ -299,7 +302,7 @@ function openDeleteModal(id) {
     });
 
     // Save delete ID in global variable
-    deletedId = id;
+    deletedEducationId = id;
 
     // Find education
     const foundEdu = education.find(edu => edu.id == id);
@@ -310,7 +313,7 @@ function openDeleteModal(id) {
     document.querySelector('#delete-education-modal .deleted-education-date').innerHTML = `<strong>Tid: </strong>${foundEdu.startmonth} ${foundEdu.startyear} - ${foundEdu.endmonth} ${foundEdu.endyear}`;
 }
 
-function showMessage(className, message) {
+function showEducationMessage(className, message) {
     // Visa meddelande
     document.querySelector('.' + className).style.display = 'block';
     document.querySelector('.' + className).innerHTML = `<button type="button" class="close" data-dismiss="alert">&times;</button>${message}`;
