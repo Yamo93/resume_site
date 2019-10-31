@@ -1,5 +1,5 @@
 // Variabler
-const localProjectURL = 'http://localhost/resume_site/pub/api/project';
+const localProjectURL = 'http://localhost/resume_admin/pub/api/project';
 let projects = [];
 let deletedProjectId = null;
 let updatedProjectId = null;
@@ -178,7 +178,7 @@ function updateProject(e) {
 function clearProjectFields() {
     document.querySelector('#projecttitle').value = '';
     document.querySelector('#projectlink').value = '';
-    document.querySelector('#projectdescription').selectedIndex = 0;
+    document.querySelector('#projectdescription').value = '';
 }
 
 function openProjectUpdateModal(id) {

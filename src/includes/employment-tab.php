@@ -111,8 +111,8 @@
 <table class="table mt-5 mb-5">
     <thead class="thead-dark">
         <tr>
-        <th scope="col">Arbetsplats</th>
         <th scope="col">Titel</th>
+        <th scope="col">Arbetsplats</th>
         <th scope="col">Tid</th>
         <th scope="col"></th>
         </tr>

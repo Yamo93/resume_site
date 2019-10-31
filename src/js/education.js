@@ -1,5 +1,5 @@
 // Variabler
-const localEducationURL = 'http://localhost/resume_site/pub/api/education';
+const localEducationURL = 'http://localhost/resume_admin/pub/api/education';
 let education = [];
 let deletedEducationId = null;
 let updatedEducationId = null;
@@ -135,8 +135,10 @@ function addEducation(e) {
         // Visa meddelande
         showEducationMessage(data.class, data.message);
 
-        // Rensa fälten
+        // Rensa fälten och enabla inputs
         clearEducationFields();
+        document.getElementById('educationendyear').removeAttribute('disabled');
+        document.getElementById('educationendmonth').removeAttribute('disabled');
 
         // Ladda om kurserna på nytt
         fetchEducation();
@@ -310,7 +312,7 @@ function openEducationDeleteModal(id) {
     // Populate
     document.querySelector('#delete-education-modal .deleted-education-name').innerHTML = `<strong>Namn: </strong>${foundEdu.name}`;
     document.querySelector('#delete-education-modal .deleted-education-school').innerHTML = `<strong>Lärosäte: </strong>${foundEdu.school}`;
-    document.querySelector('#delete-education-modal .deleted-education-date').innerHTML = `<strong>Tid: </strong>${foundEdu.startmonth} ${foundEdu.startyear} - ${foundEdu.endmonth} ${foundEdu.endyear}`;
+    document.querySelector('#delete-education-modal .deleted-education-date').innerHTML = `<strong>Tid: </strong>${foundEdu.startmonth} ${foundEdu.startyear} - ${foundEdu.ongoing == 1 ? 'pågående' : foundEdu.endmonth + ' ' + foundEdu.endyear}`;
 }
 
 function showEducationMessage(className, message) {

@@ -1,5 +1,5 @@
 // Variabler
-const localEmploymentURL = 'http://localhost/resume_site/pub/api/employment';
+const localEmploymentURL = 'http://localhost/resume_admin/pub/api/employment';
 let employments = [];
 let deletedEmploymentId = null;
 let updatedEmploymentId = null;
@@ -47,7 +47,6 @@ function fetchEmployment() {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
         if (data instanceof Array) {
             // Klonar arrayen
             employments = [...data];
@@ -135,8 +134,10 @@ function addEmployment(e) {
         // Visa meddelande
         showEmploymentMessage(data.class, data.message);
 
-        // Rensa fälten
+        // Rensa fälten och enabla inputs
         clearEmploymentFields();
+        document.getElementById('employmentendyear').removeAttribute('disabled');
+        document.getElementById('employmentendmonth').removeAttribute('disabled');
 
         // Ladda om kurserna på nytt
         fetchEmployment();
