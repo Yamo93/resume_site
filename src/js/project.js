@@ -1,5 +1,6 @@
 // Variabler
 const localProjectURL = 'http://localhost/resume_admin/pub/api/project';
+const publicProjectURL = 'http://studenter.miun.se/~yage1800/dt173g/resume-dashboard/api/project.php';
 let projects = [];
 let deletedProjectId = null;
 let updatedProjectId = null;
@@ -19,7 +20,7 @@ function fetchProjects() {
     document.querySelector('.project-card').style.display = 'none';
 
     // Hämta kurser via API:et
-    fetch(localProjectURL, {
+    fetch(publicProjectURL, {
         method: 'get'
     })
     .then(res => res.json())
@@ -82,7 +83,7 @@ function addProject(e) {
         description
     };
 
-    fetch(localProjectURL, {
+    fetch(publicProjectURL, {
         method: 'post',
         body: JSON.stringify(addedProject)
     })
@@ -105,7 +106,7 @@ function addProject(e) {
 
 function deleteProject() {
 
-    fetch(localProjectURL, {
+    fetch(publicProjectURL, {
         method: 'delete',
         body: JSON.stringify({ id: deletedProjectId })
     })
@@ -151,7 +152,7 @@ function updateProject(e) {
         id: updatedProjectId
     };
 
-    fetch(localProjectURL, {
+    fetch(publicProjectURL, {
         method: 'put',
         body: JSON.stringify(project)
     })

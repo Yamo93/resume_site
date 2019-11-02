@@ -1,5 +1,6 @@
 // Variabler
 const localEmploymentURL = 'http://localhost/resume_admin/pub/api/employment';
+const publicEmploymentURL = 'http://studenter.miun.se/~yage1800/dt173g/resume-dashboard/api/employment.php';
 let employments = [];
 let deletedEmploymentId = null;
 let updatedEmploymentId = null;
@@ -42,7 +43,7 @@ function fetchEmployment() {
     document.querySelector('.employment-card').style.display = 'none';
 
     // Hämta kurser via API:et
-    fetch(localEmploymentURL, {
+    fetch(publicEmploymentURL, {
         method: 'get'
     })
     .then(res => res.json())
@@ -125,7 +126,7 @@ function addEmployment(e) {
     }
 
 
-    fetch(localEmploymentURL, {
+    fetch(publicEmploymentURL, {
         method: 'post',
         body: JSON.stringify(addedEmployment)
     })
@@ -150,7 +151,7 @@ function addEmployment(e) {
 
 function deleteEmployment() {
 
-    fetch(localEmploymentURL, {
+    fetch(publicEmploymentURL, {
         method: 'delete',
         body: JSON.stringify({ id: deletedEmploymentId })
     })
@@ -225,7 +226,7 @@ function updateEmployment(e) {
         };
     }
 
-    fetch(localEmploymentURL, {
+    fetch(publicEmploymentURL, {
         method: 'put',
         body: JSON.stringify(employment)
     })

@@ -1,5 +1,6 @@
 // Variabler
 const localEducationURL = 'http://localhost/resume_admin/pub/api/education';
+const publicEducationURL = 'http://studenter.miun.se/~yage1800/dt173g/resume-dashboard/api/education.php';
 let education = [];
 let deletedEducationId = null;
 let updatedEducationId = null;
@@ -42,7 +43,7 @@ function fetchEducation() {
     document.querySelector('.education-card').style.display = 'none';
 
     // Hämta kurser via API:et
-    fetch(localEducationURL, {
+    fetch(publicEducationURL, {
         method: 'get'
     })
     .then(res => res.json())
@@ -126,7 +127,7 @@ function addEducation(e) {
     }
 
 
-    fetch(localEducationURL, {
+    fetch(publicEducationURL, {
         method: 'post',
         body: JSON.stringify(addedEducation)
     })
@@ -151,7 +152,7 @@ function addEducation(e) {
 
 function deleteEducation() {
 
-    fetch(localEducationURL, {
+    fetch(publicEducationURL, {
         method: 'delete',
         body: JSON.stringify({ id: deletedEducationId })
     })
@@ -226,7 +227,7 @@ function updateEducation(e) {
         };
     }
 
-    fetch(localEducationURL, {
+    fetch(publicEducationURL, {
         method: 'put',
         body: JSON.stringify(updatedEdu)
     })

@@ -1,7 +1,7 @@
 <?php 
-/* Publikt */
-// define("DB_HOST", 'localhost');
-// define("DB_USERNAME", 'root');
-// define("DB_PASSWORD", '');
-// define("DB_NAME", 'resume_site');
+    /* Publikt */
+    define("DB_HOST", 'studentmysql.miun.se');
+    define("DB_USERNAME", 'yage1800');
+    define("DB_PASSWORD", 'j9jxpj24');
+    define("DB_NAME", 'yage1800');
 ?>

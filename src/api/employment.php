@@ -5,10 +5,10 @@
         include '../classes/' . $class . '.class.php';
     }
     /* Lokal utveckling */
-    define("DB_HOST", 'localhost');
-    define("DB_USERNAME", 'yamo93');
-    define("DB_PASSWORD", '12345');
-    define("DB_NAME", 'resume_site');
+    // define("DB_HOST", 'localhost');
+    // define("DB_USERNAME", 'yamo93');
+    // define("DB_PASSWORD", '12345');
+    // define("DB_NAME", 'resume_site');
     spl_autoload_register('my_autoloader');
     include_once('../php/properties.php');
 
